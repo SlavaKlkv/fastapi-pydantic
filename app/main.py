@@ -1,10 +1,14 @@
-from fastapi import FastAPI, HTTPException
+from typing import Optional
+
+from fastapi import FastAPI, HTTPException, Query
 from starlette import status
 
 from .schemas import Entity, EntityCreate, EntityUpdate
 from .storage import entities, next_id
 
+
 app = FastAPI()
+
 
 def get_entity_or_404(entity_id: int) -> Entity:
     """Получение сущности или выброс ошибки."""
@@ -20,8 +24,31 @@ def get_entity_or_404(entity_id: int) -> Entity:
     response_model=list[Entity],
     description='Получить список всех сущностей'
 )
-def list_entities():
-    return list(entities.values())
+def list_entities(
+    name: Optional[str] = Query(
+        None, description='Фильтрация по имени'
+    ),
+    value: Optional[int] = Query(
+        None, description='Фильтрация по значению'
+    ),
+    sort: Optional[str] = Query(
+        None, description='Поле для сортировки: name или value'
+    ),
+    order: Optional[str] = Query(
+        'asc', description='Порядок сортировки: '
+                           'asc (по возрастанию) или desc (по убыванию)'
+    )
+):
+    results = list(entities.values())
+    if name is not None:
+        results = [e for e in results if e.name == name]
+    if value is not None:
+        results = [e for e in results if e.value == value]
+    if sort is not None and sort in ('name', 'value'):
+        results = sorted(
+            results, key=lambda e: getattr(e, sort), reverse=order == 'desc'
+        )
+    return results
 
 
 @app.get(
