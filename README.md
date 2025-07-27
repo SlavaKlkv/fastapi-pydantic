@@ -33,7 +33,7 @@
     ```bash
     git clone https://github.com/SlavaKlkv/fastapi-pydantic.git
     ```
-   Перейдите в корень проекта:
+1. Перейдите в корень проекта:
    ```bash
     cd fastapi-pydantic
    ```
@@ -42,7 +42,7 @@
     ```bash
     python -m venv venv
     ```
-    Для Linux/macOS
+    Для Linux/macOS:
     ```bash
     source venv/bin/activate
     ```
@@ -79,7 +79,6 @@
     celery -A app.tasks worker --loglevel=info
     ```
 
-<<<<<<< HEAD
 ### Запуск через Docker Compose
 
 Запуск приложения
@@ -111,19 +110,6 @@
 ```bash
    docker compose down
 ```
-=======
-### Запуск в контейнере
-
-1. Авторизуйтесь в Docker:
-    ```bash
-    docker login
-    ```
-    
-3. Команда для сборки, запуска с пробросом порта и удаления после остановки:
-    ```bash
-    docker run --rm --name fastapi-app -p 8000:8000 $(docker build -q -t fastapi-pydantic .)
-    ```
->>>>>>> origin/main
 
 ### Открыть Swagger UI:
    'http://127.0.0.1:8000/docs'  
@@ -199,9 +185,4 @@ Parameters
 ---
 
 ## Лицензия
-
-<<<<<<< HEAD
 MIT
-=======
-MIT
->>>>>>> origin/main
