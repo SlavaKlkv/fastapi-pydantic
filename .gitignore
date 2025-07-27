@@ -150,3 +150,5 @@ backend/logs/
 postgres_data/
 
 logs/
+
+dump.rdb

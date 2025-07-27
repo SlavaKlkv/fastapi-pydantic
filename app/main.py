@@ -5,6 +5,7 @@ from starlette import status
 
 from .schemas import Entity, EntityCreate, EntityUpdate
 from .storage import entities, next_id
+from .tasks import log_event
 
 
 app = FastAPI()
@@ -48,6 +49,7 @@ def list_entities(
         results = sorted(
             results, key=lambda e: getattr(e, sort), reverse=order == 'desc'
         )
+    log_event.delay('list')
     return results
 
 
@@ -69,6 +71,7 @@ def create_entity(entity: EntityCreate):
     eid = next_id()
     new_entity = Entity(id=eid, **entity.model_dump())
     entities[eid] = new_entity
+    log_event.delay('create', new_entity.model_dump())
     return new_entity
 
 
